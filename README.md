@@ -1,16 +1,24 @@
 # mpd-sacd-archlinux
-A patch for mpd-sacd@aur.archlinux.org
+An update for mpd-sacd@aur.archlinux.org
 ---
 ## Installation
-1. Get all the files
+1. Get the source code from manisiutkin's MPD.GIT at SOURCEFORGE  
+   Download the "mpd.zip" modified on 2023-0216  
+   URL:https://sourceforge.net/projects/mpd.sacddecoder.p/files/  
+
+2. Get all the files from Github.com  
 ```bash
-    git clone https://github.com/bruce-awareit/mpd-sacd-archlinux.git
+    git clone https://github.com/bruce-awareit/mpd-sacd-archlinux.git  
 ```
-2. Change to the folder
+3. Move the source code to the folder  
 ```bash
-    cd mpd-sacd-archlinux
+    mv mpd.zip mpd-sacd-archlinux/  
 ```
-3. Make and Install the package
+4. Change to the folder  
 ```bash
-    makepkg -i
+    cd mpd-sacd-archlinux/  
+```
+5. Make and Install the package  
+```bash
+    makepkg -i  
 ```

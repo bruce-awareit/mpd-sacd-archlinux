@@ -1,33 +1,95 @@
-# Maintainer: Bruce Hsieh <bruce_,mail_kh_edu_tw>
+# Maintainer: Bruce-AwareIT <bruce@awareit>
 
 pkgname=mpd-sacd
-pkgver=0.23.9
-pkgrel=1
+srcfilename=mpd
+pkgver=0.23.12
+pkgrel=5
 pkgdesc='MPD with patches for SACD and DVDA ISO playback.'
 url='https://sourceforge.net/p/sacddecoder/mpd/MPD.git/ci/master/tree/'
 license=('GPL')
 arch=('i686' 'x86_64' 'aarch64' 'armv7h')
-depends=('libao' 'ffmpeg' 'libmodplug' 'audiofile' 'libshout' 'libmad' 'curl' 'faad2'
-	'sqlite' 'jack' 'libmms' 'wavpack' 'avahi' 'libid3tag' 'yajl' 'libmpdclient'
-	'icu' 'libupnp' 'libnfs' 'libsamplerate' 'libsoxr' 'smbclient' 'libcdio-paranoia'
- 	'libgme' 'zziplib' 'fluidsynth' 'libmikmod' 'wildmidi' 'liburing' 'openal'
-        'libmpcdec' 'mpg123' 'twolame' 'rsync')
-makedepends=('boost' 'meson' 'python-sphinx' 'clang' 'ninja')
+depends=(
+  gcc-libs
+  glibc
+  libcdio
+  libcdio-paranoia
+  libgcrypt
+  libgme
+  libmad
+  libmms
+  libmodplug
+  libmpcdec
+  libnfs
+  libshout
+  libsidplayfp
+  libsoxr
+  # smbclient  # disabled because of https://bugzilla.samba.org/show_bug.cgi?id=11413
+  wavpack
+  wildmidi
+  zlib
+  zziplib
+)
+makedepends=(
+  alsa-lib
+  audiofile
+  avahi
+  boost
+  bzip2
+  chromaprint
+  curl
+  dbus
+  expat
+  faad2
+  ffmpeg
+  flac
+  fluidsynth
+  fmt
+  icu
+  jack
+  lame
+  libao
+  libid3tag
+  libmikmod
+  libmpdclient
+  libogg
+  libopenmpt
+  libpulse
+  libsamplerate
+  libsndfile
+  libupnp
+  liburing
+  libvorbis
+  meson
+  mpg123
+  openal
+  opus
+  libpipewire
+  python-sphinx
+  python-sphinxcontrib-jquery
+  sqlite
+  systemd
+  twolame
+  yajl
+)
 conflicts=('mpd')
 provides=("mpd=${pkgver}")
-source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=cf54bc62c66b637da47422e5595fdfe572615bf2'
-	'sysusers.d'
-	'tmpfiles.d'
-	'conf')
-sha1sums=('SKIP'
-          '7c7de7b30c6c8e1c705dd415692f6a08a3f62c82'
-          'd82864959d1a1a07bf75d87c7586dbb713892f3a'
-          '291fd5cda9f0845834a553017327c4586bd853f6')
+source=(
+  $srcfilename.zip
+  $srcfilename.conf
+  $srcfilename.sysusers
+  $srcfilename.tmpfiles
+  $srcfilename.service.override
+)
+sha512sums=(
+            '73e30fbb6f9a1414d174f8b5c596d0386e11d2f202df97a3f09cb2a95095b3001d01bcaf03c9db087beac0cbdf6e51aa8f85f5905b667af8b7c3cbd44e1ff287'
+            '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
+            '6e467481406279767b709ec6d5c06dbd825c0de09045c52ffa2d21d0604dcfe19b7a92bf42bed25163d66a3a0d1dbde6185a648b433eaf5eac56be90491e2e18'
+            'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
+            'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
 backup=('etc/mpd.conf')
 
 prepare() {
 	cd "${srcdir}/mpd"
-        patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
 	rm -rf build
 	install -d build
 }
@@ -56,19 +118,16 @@ build() {
 	ninja
 }
 
+check() {
+  ninja -C mpd/build test
+}
+
 package() {
-	cd "${srcdir}/mpd/build"
-	DESTDIR="${pkgdir}" ninja install
-	install -Dm644 ../doc/mpdconf.example "${pkgdir}"/usr/share/doc/mpd/mpdconf.example
-	install -Dm644 doc/mpd.conf.5 "${pkgdir}"/usr/share/man/man5/mpd.conf.5
-	install -Dm644 doc/mpd.1 "${pkgdir}"/usr/share/man/man1/mpd.1
 
-	install -Dm644 ../../sysusers.d "${pkgdir}"/usr/lib/sysusers.d/mpd.conf
-	install -Dm644 ../../conf "${pkgdir}"/etc/mpd.conf
-	install -Dm644 ../../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
-
-	sed \
-		-e '/\[Service\]/a User=mpd' \
-		-e '/WantedBy=/c WantedBy=default.target' \
-		-i "${pkgdir}"/usr/lib/systemd/system/mpd.service
+DESTDIR="$pkgdir" ninja -C mpd/build install
+  install -vDm 644 ${srcdir}/$srcfilename/doc/${srcfilename}conf.example -t "$pkgdir/usr/share/doc/$pkgname/"
+  install -vDm 644 $srcfilename.service.override "$pkgdir/usr/lib/systemd/system/mpd.service.d/00-arch.conf"
+  install -vDm 644 $srcfilename.conf -t "$pkgdir/etc/"
+  install -vDm 644 $srcfilename.sysusers "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
+  install -vDm 644 $srcfilename.tmpfiles "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
 }
