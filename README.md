@@ -9,7 +9,7 @@ An update for mpd-sacd@aur.archlinux.org
 ```bash
     git clone https://github.com/bruce-awareit/mpd-sacd-archlinux.git
 ```
-3. Move the source code to the folde
+3. Move the source code to the folder
 ```bash
     mv mpd.zip mpd-sacd-archlinux/
 ```
