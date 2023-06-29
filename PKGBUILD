@@ -66,6 +66,7 @@ makedepends=(
   libpipewire
   python-sphinx
   python-sphinxcontrib-jquery
+  python-sphinx_rtd_theme
   sqlite
   systemd
   twolame
