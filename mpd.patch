@@ -1,0 +1,127 @@
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/command/PlayerCommands.cxx mpd.new/src/command/PlayerCommands.cxx
+--- mpd.orig/src/command/PlayerCommands.cxx	2022-10-05 19:51:20.000000000 +0800
++++ mpd.new/src/command/PlayerCommands.cxx	2023-07-30 19:22:16.527274291 +0800
+@@ -29,6 +29,7 @@
+ #include "Partition.hxx"
+ #include "Instance.hxx"
+ #include "IdleFlags.hxx"
++#include "lib/fmt/AudioFormatFormatter.hxx"
+ #include "util/StringBuffer.hxx"
+ #include "util/ScopeExit.hxx"
+ #include "util/Exception.hxx"
+@@ -186,7 +187,7 @@
+ 
+ 		if (player_status.audio_format.IsDefined())
+ 			r.Fmt(FMT_STRING(COMMAND_STATUS_AUDIO ": {}\n"),
+-			      ToString(player_status.audio_format));
++			      player_status.audio_format);
+ 	}
+ 
+ #ifdef ENABLE_DATABASE
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/Instance.cxx mpd.new/src/Instance.cxx
+--- mpd.orig/src/Instance.cxx	2022-10-05 19:51:20.000000000 +0800
++++ mpd.new/src/Instance.cxx	2023-07-30 16:26:11.783890546 +0800
+@@ -51,14 +51,7 @@
+ #endif
+ #endif
+ 
+-Instance::Instance()
+-	:rtio_thread(true),
+-#ifdef ENABLE_SYSTEMD_DAEMON
+-	 systemd_watchdog(event_loop),
+-#endif
+-	 idle_monitor(event_loop, BIND_THIS_METHOD(OnIdle))
+-{
+-}
++Instance::Instance() = default;
+ 
+ Instance::~Instance() noexcept
+ {
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/Instance.hxx mpd.new/src/Instance.hxx
+--- mpd.orig/src/Instance.hxx	2022-10-05 19:51:20.000000000 +0800
++++ mpd.new/src/Instance.hxx	2023-07-30 16:28:00.320322195 +0800
+@@ -87,7 +87,7 @@
+ 	/**
+ 	 * A thread running an #EventLoop for non-blocking (bulk) I/O.
+ 	 */
+-	EventThread io_thread;
++	EventThread io_thread{true};
+ 
+ 	/**
+ 	 * Another thread running an #EventLoop for non-blocking
+@@ -98,7 +98,7 @@
+ 	EventThread rtio_thread;
+ 
+ #ifdef ENABLE_SYSTEMD_DAEMON
+-	Systemd::Watchdog systemd_watchdog;
++	Systemd::Watchdog systemd_watchdog{event_loop};
+ #endif
+ 
+ 	std::unique_ptr<InputCacheManager> input_cache;
+@@ -107,7 +107,7 @@
+ 	 * Monitor for global idle events to be broadcasted to all
+ 	 * partitions.
+ 	 */
+-	MaskMonitor idle_monitor;
++	MaskMonitor idle_monitor{event_loop, BIND_THIS_METHOD(OnIdle)};
+ 
+ #ifdef ENABLE_NEIGHBOR_PLUGINS
+ 	std::unique_ptr<NeighborGlue> neighbors;
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/lib/fmt/SystemError.hxx mpd.new/src/lib/fmt/SystemError.hxx
+--- mpd.orig/src/lib/fmt/SystemError.hxx	2023-02-14 15:16:15.000000000 +0800
++++ mpd.new/src/lib/fmt/SystemError.hxx	2023-07-30 19:20:21.273559711 +0800
+@@ -93,6 +93,15 @@
+ 
+ #endif // _WIN32
+ 
++[[nodiscard]] [[gnu::pure]]
++inline std::system_error
++VFmtErrno(int code,
++	  fmt::string_view format_str, fmt::format_args args) noexcept
++{
++	return VFmtSystemError(std::error_code(code, ErrnoCategory()),
++			       format_str, args);
++}
++
+ template<typename S, typename... Args>
+ requires(std::is_convertible_v<S, fmt::string_view>)
+ [[nodiscard]] [[gnu::pure]]
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/SongPrint.cxx mpd.new/src/SongPrint.cxx
+--- mpd.orig/src/SongPrint.cxx	2022-10-05 19:51:20.000000000 +0800
++++ mpd.new/src/SongPrint.cxx	2023-07-30 16:17:36.488636363 +0800
+@@ -23,6 +23,7 @@
+ #include "TimePrint.hxx"
+ #include "TagPrint.hxx"
+ #include "client/Response.hxx"
++#include "lib/fmt/AudioFormatFormatter.hxx"
+ #include "fs/Traits.hxx"
+ #include "time/ChronoUtil.hxx"
+ #include "util/StringBuffer.hxx"
+@@ -93,7 +94,7 @@
+ 		time_print(r, "Last-Modified", song.mtime);
+ 
+ 	if (song.audio_format.IsDefined())
+-		r.Fmt(FMT_STRING("Format: {}\n"), ToString(song.audio_format));
++		r.Fmt(FMT_STRING("Format: {}\n"), song.audio_format);
+ 
+ 	tag_print_values(r, song.tag);
+ 
+@@ -116,7 +117,7 @@
+ 		time_print(r, "Last-Modified", song.GetLastModified());
+ 
+ 	if (const auto &f = song.GetAudioFormat(); f.IsDefined())
+-		r.Fmt(FMT_STRING("Format: {}\n"), ToString(f));
++		r.Fmt(FMT_STRING("Format: {}\n"), f);
+ 
+ 	tag_print_values(r, song.GetTag());
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/TimePrint.cxx mpd.new/src/TimePrint.cxx
+--- mpd.orig/src/TimePrint.cxx	2022-10-05 19:51:20.000000000 +0800
++++ mpd.new/src/TimePrint.cxx	2023-07-30 09:07:21.083925517 +0800
+@@ -36,5 +36,5 @@
+ 		return;
+ 	}
+ 
+-	r.Fmt(FMT_STRING("{}: {}\n"), name, s);
++	r.Fmt(FMT_STRING("{}: {}\n"), name, s.c_str());
+ }
