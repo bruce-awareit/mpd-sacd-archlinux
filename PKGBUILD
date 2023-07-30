@@ -2,8 +2,8 @@
 
 pkgname=mpd-sacd
 srcfilename=mpd
-pkgver=0.23.12
-pkgrel=5
+pkgver=0.23.13
+pkgrel=1
 pkgdesc='MPD with patches for SACD and DVDA ISO playback.'
 url='https://sourceforge.net/p/sacddecoder/mpd/MPD.git/ci/master/tree/'
 license=('GPL')
@@ -80,17 +80,20 @@ source=(
   $srcfilename.sysusers
   $srcfilename.tmpfiles
   $srcfilename.service.override
+  $srcfilename.patch
 )
 sha512sums=(
             '73e30fbb6f9a1414d174f8b5c596d0386e11d2f202df97a3f09cb2a95095b3001d01bcaf03c9db087beac0cbdf6e51aa8f85f5905b667af8b7c3cbd44e1ff287'
             '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
             '6e467481406279767b709ec6d5c06dbd825c0de09045c52ffa2d21d0604dcfe19b7a92bf42bed25163d66a3a0d1dbde6185a648b433eaf5eac56be90491e2e18'
             'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
-            'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
+            'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c'
+            'b9b546788675238a126d1f8b0331911d59bef10a196989656ab3356d79a5bf6612a30a62a73cdc6f0f6d30757da9acb9dfd5e15a43cd1f8b859be9ec18536cd3')
 backup=('etc/mpd.conf')
 
 prepare() {
 	cd "${srcdir}/mpd"
+	patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
 	rm -rf build
 	install -d build
 }
