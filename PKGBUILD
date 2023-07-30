@@ -94,7 +94,6 @@ backup=('etc/mpd.conf')
 prepare() {
 	cd "${srcdir}/mpd"
 	patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
-	rm -rf build
 	install -d build
 }
 
