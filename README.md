@@ -3,7 +3,7 @@ An update for mpd-sacd@aur.archlinux.org
 ---
 ## Installation
 1. Get the source code from _Manisiutkin's MPD.GIT_ at SOURCEFORGE  
-   > Download the "mpd.zip" modified on 2023-0216  
+   > Download the "mpd.zip" modified on 2023-0831  
    > [https://sourceforge.net/projects/mpd.sacddecoder.p/files/](https://sourceforge.net/projects/mpd.sacddecoder.p/files/)
 2. Get all the files from Github.com
 ```bash
