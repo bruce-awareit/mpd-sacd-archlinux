@@ -3,7 +3,7 @@
 pkgname=mpd-sacd
 srcfilename=mpd
 pkgver=0.23.13
-pkgrel=2
+pkgrel=3
 pkgdesc='MPD with patches for SACD and DVDA ISO playback.'
 url='https://sourceforge.net/p/sacddecoder/mpd/MPD.git/ci/master/tree/'
 license=('GPL')
@@ -92,7 +92,7 @@ backup=('etc/mpd.conf')
 
 prepare() {
 	cd "${srcdir}/mpd"
-#	patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
+	patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
 	install -d build
 }
 

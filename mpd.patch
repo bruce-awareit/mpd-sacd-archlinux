@@ -1,0 +1,14 @@
+只在 mpd.new 存在：output
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/decoder/plugins/FfmpegIo.cxx mpd.new/src/decoder/plugins/FfmpegIo.cxx
+--- mpd.orig/src/decoder/plugins/FfmpegIo.cxx	2023-08-28 14:34:08.000000000 +0800
++++ mpd.new/src/decoder/plugins/FfmpegIo.cxx	2023-12-08 10:11:02.354857258 +0800
+@@ -10,6 +10,9 @@
+ 
+ extern "C" {
+ #include <libavutil/mem.h>
++#if LIBAVUTIL_VERSION_INT >= AV_VERSION_INT(58, 29, 100)
++#include <libavutil/error.h>
++#endif
+ }
+ 
+ AvioStream::~AvioStream()
