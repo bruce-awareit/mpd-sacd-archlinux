@@ -1,110 +1,45 @@
-# Maintainer: Bruce-AwareIT <bruce@awareit>
+# Maintainer: Melvin Vermeeren <mail@mel.vin>
+# Maintainer: Hajos Attila <linux.alucard@gmail.com>
 
 pkgname=mpd-sacd
-srcfilename=mpd
 pkgver=0.23.13
 pkgrel=3
-pkgdesc='MPD with patches for SACD and DVDA ISO playback.'
+pkgdesc='MPD with patches for SACD and DVDA ISO playback. (DVDA ISO playback temporary disabled)'
 url='https://sourceforge.net/p/sacddecoder/mpd/MPD.git/ci/master/tree/'
-license=('GPL')
 arch=('i686' 'x86_64' 'aarch64' 'armv7h')
+license=('GPL-2.0-or-later')
 depends=(
-  gcc-libs
-  glibc
-  libcdio
-  libcdio-paranoia
-  libgcrypt
-  libgme
-  libmad
-  libmms
-  libmodplug
-  libmpcdec
-  libnfs
-  libshout
-  libsidplayfp
-  libsoxr
-  # smbclient  # disabled because of https://bugzilla.samba.org/show_bug.cgi?id=11413
-  wavpack
-  wildmidi
-  zlib
-  zziplib
-)
-makedepends=(
-  alsa-lib
-  audiofile
-  avahi
-  boost
-  bzip2
-#  chromaprint
-  curl
-  dbus
-  expat
-  faad2
-  ffmpeg
-  flac
-  fluidsynth
-  fmt
-  icu
-  jack
-  lame
-  libao
-  libid3tag
-  libmikmod
-  libmpdclient
-  libogg
-  libopenmpt
-  libpulse
-  libsamplerate
-  libsndfile
-  libupnp
-  liburing
-  libvorbis
-  meson
-  mpg123
-  openal
-  opus
-  libpipewire
-  python-sphinx
-  python-sphinxcontrib-jquery
-  python-sphinx_rtd_theme
-  sqlite
-  systemd
-  twolame
-  yajl
-)
+    'alsa-lib' 'audiofile' 'expat' 'faad2' 'ffmpeg4.4' 'flac' 'fluidsynth' 'gcc-libs' 'hicolor-icon-theme' 'icu' 'jack' 'lame'
+    'libao' 'libcdio' 'libcdio-paranoia' 'libgme' 'libid3tag' 'libmad' 'libmikmod' 'libmms' 'libmodplug' 'libmpcdec' 'libmpdclient'
+    'libnfs' 'libogg' 'libopenmpt' 'libpipewire' 'libpulse' 'libshout' 'libsndfile' 'libsamplerate' 'libsoxr' 'libupnp'
+    'liburing' 'libvorbis' 'mpg123' 'openal' 'opus' 'pcre2' 'systemd-libs' 'twolame' 'wavpack' 'wildmidi' 'yajl' 'zlib' 'zziplib')
+makedepends=('boost' 'meson' 'cmake' 'git' 'python-sphinx_rtd_theme' 'clang' 'ninja')
 conflicts=('mpd')
 provides=("mpd=${pkgver}")
-source=(
-  $srcfilename.zip
-  $srcfilename.conf
-  $srcfilename.sysusers
-  $srcfilename.tmpfiles
-  $srcfilename.service.override
-#  $srcfilename.patch
-)
-sha512sums=(
-            '8711d216759bee5eadca06f828effd807c36cfacabb0f028852b5d5719312e2bc0f353e0bfdec9e029e32f3a1795b19202fc14b904e2bd3d6d1e647dbc1709be'
-            '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
-            '6e467481406279767b709ec6d5c06dbd825c0de09045c52ffa2d21d0604dcfe19b7a92bf42bed25163d66a3a0d1dbde6185a648b433eaf5eac56be90491e2e18'
-            'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
-            'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
+source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da'
+        'fmt-v11.patch::https://github.com/MusicPlayerDaemon/MPD/commit/1402869715e3efca87942d79c3173a6b21a6925d.patch'	
+        'sysusers.d'
+	'tmpfiles.d'
+	'conf')
+sha1sums=('SKIP'
+          'beb2daa0105a7bb87918069c93f230b230c24e69'
+          '7c7de7b30c6c8e1c705dd415692f6a08a3f62c82'
+          'd82864959d1a1a07bf75d87c7586dbb713892f3a'
+          '291fd5cda9f0845834a553017327c4586bd853f6')
 backup=('etc/mpd.conf')
 
 prepare() {
-	cd "${srcdir}/mpd"
-	patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
+	cd "${srcdir}/mpd/"
+        patch --forward --strip=1 --input="${srcdir}/../fmt-v11.patch" 
+	rm -rf build
 	install -d build
 }
 
 build() {
-	# Using CLang compiler
-	CC=clang
-	CXX=clang++
-	mesonargs="-Dc_std=c11 -Dcpp_std=c++2a"
-
-	cd "${srcdir}/mpd/build"
+	cd "$srcdir/mpd/build"
+	export PKG_CONFIG_PATH='/usr/lib/ffmpeg4.4/pkgconfig'
 	_opts=('-Ddocumentation=enabled'
-#		'-Dchromaprint=disabled' # appears not to be used for anything
+		'-Dchromaprint=disabled' # appears not to be used for anything
 		'-Dsidplay=disabled' # unclear why but disabled in the past
 		'-Dadplug=disabled' # not in an official repo
 		'-Dsndio=disabled' # interferes with detection of alsa devices
@@ -119,61 +54,25 @@ build() {
 		'-Dsoundcloud=enabled'
 		'-Dzzip=enabled'
 		'-Dsacdiso=true'
-		'-Ddvdaiso=true'
+		'-Ddvdaiso=false' # temporary disabled
 	)
-	arch-meson .. ${_opts[@]} 
+	env CC=clang CXX=clang++ arch-meson .. ${_opts[@]}
 	ninja
 }
 
-check() {
-  ninja -C mpd/build test
-}
-
 package() {
+	cd "${srcdir}/mpd/build"
+	DESTDIR="${pkgdir}" ninja install
+	install -Dm644 ../doc/mpdconf.example "${pkgdir}"/usr/share/doc/mpd/mpdconf.example
+	install -Dm644 doc/mpd.conf.5 "${pkgdir}"/usr/share/man/man5/mpd.conf.5
+	install -Dm644 doc/mpd.1 "${pkgdir}"/usr/share/man/man1/mpd.1
 
-  depends+=(
-    alsa-lib libasound.so
-    audiofile libaudiofile.so
-    avahi libavahi-{client,common}.so
-    bzip2 libbz2.so
-    chromaprint libchromaprint.so
-    curl libcurl.so
-    dbus libdbus-1.so
-    expat libexpat.so
-    faad2 libfaad.so
-    ffmpeg libav{codec,filter,format,util}.so
-    flac libFLAC.so
-    fluidsynth libfluidsynth.so
-    fmt libfmt.so 
-    icu libicui18n.so libicuuc.so
-    jack libjack.so
-    lame libmp3lame.so
-    libao libao.so
-    libid3tag libid3tag.so
-    libmikmod libmikmod.so
-    libmpdclient libmpdclient.so
-    libogg libogg.so
-    libopenmpt libopenmpt.so
-    libpipewire libpipewire-0.3.so
-    libpulse libpulse.so
-    libsamplerate libsamplerate.so
-    libsndfile libsndfile.so
-    libupnp libixml.so libupnp.so
-    liburing liburing.so
-    libvorbis libvorbis{,enc}.so
-    mpg123 libmpg123.so
-    openal libopenal.so
-    opus libopus.so
-    sqlite libsqlite3.so
-    systemd-libs libsystemd.so
-    twolame libtwolame.so
-    yajl libyajl.so
-  )
+	install -Dm644 ../../sysusers.d "${pkgdir}"/usr/lib/sysusers.d/mpd.conf
+	install -Dm644 ../../conf "${pkgdir}"/etc/mpd.conf
+	install -Dm644 ../../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
 
-DESTDIR="$pkgdir" ninja -C mpd/build install
-  install -vDm 644 ${srcdir}/$srcfilename/doc/${srcfilename}conf.example -t "$pkgdir/usr/share/doc/$pkgname/"
-  install -vDm 644 $srcfilename.service.override "$pkgdir/usr/lib/systemd/system/mpd.service.d/00-arch.conf"
-  install -vDm 644 $srcfilename.conf -t "$pkgdir/etc/"
-  install -vDm 644 $srcfilename.sysusers "$pkgdir/usr/lib/sysusers.d/$pkgname.conf"
-  install -vDm 644 $srcfilename.tmpfiles "$pkgdir/usr/lib/tmpfiles.d/$pkgname.conf"
+	sed \
+		-e '/\[Service\]/a User=mpd' \
+		-e '/WantedBy=/c WantedBy=default.target' \
+		-i "${pkgdir}"/usr/lib/systemd/system/mpd.service
 }
