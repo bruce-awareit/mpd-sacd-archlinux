@@ -3,7 +3,7 @@
 
 pkgname=mpd-sacd
 pkgver=0.23.13
-pkgrel=3
+pkgrel=4
 pkgdesc='MPD with patches for SACD and DVDA ISO playback. (DVDA ISO playback temporary disabled)'
 url='https://sourceforge.net/p/sacddecoder/mpd/MPD.git/ci/master/tree/'
 arch=('i686' 'x86_64' 'aarch64' 'armv7h')
