@@ -1,6 +1,15 @@
 # mpd-sacd-archlinux
-An update for mpd-sacd@aur.archlinux.org
+An update for [mpd-sacd@aur.archlinux.org](https://aur.archlinux.org/packages/mpd-sacd)
 ---
+
+There are quick and dirty patches for fmt ver. 11.1.2-1 and libnfs ver. 6.0.2-3 on Arch Linux.
+Please refer to Issues of [MusicPlayerDaemon on GitHub](https://github.com/MusicPlayerDaemon/MPD)
+
+1. [Failed compile with libfmt-11.1.0 #2173](https://github.com/MusicPlayerDaemon/MPD/issues/2173)
+2. [about libnfs api v2 change #2165](https://github.com/MusicPlayerDaemon/MPD/issues/2165)
+
+
+
 ## Installation
 1. Get all the files from Github.com
 ```bash

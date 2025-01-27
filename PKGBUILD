@@ -3,7 +3,7 @@
 
 pkgname=mpd-sacd
 pkgver=0.23.13
-pkgrel=4
+pkgrel=6
 pkgdesc='MPD with patches for SACD and DVDA ISO playback. (DVDA ISO playback temporary disabled)'
 url='https://sourceforge.net/p/sacddecoder/mpd/MPD.git/ci/master/tree/'
 arch=('i686' 'x86_64' 'aarch64' 'armv7h')
@@ -17,12 +17,14 @@ makedepends=('boost' 'meson' 'cmake' 'git' 'python-sphinx_rtd_theme' 'clang' 'ni
 conflicts=('mpd')
 provides=("mpd=${pkgver}")
 source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da'
-        'fmt-v11.patch::https://github.com/MusicPlayerDaemon/MPD/commit/1402869715e3efca87942d79c3173a6b21a6925d.patch'	
+        'mpd-sacd-libfmt-v11.patch'
+	'mpd-sacd-libnfs-6.patch'
         'sysusers.d'
 	'tmpfiles.d'
 	'conf')
 sha1sums=('SKIP'
-          'beb2daa0105a7bb87918069c93f230b230c24e69'
+          '2d0c4b8f20791e03cab40a4058e17ad4144d522a'
+          '9718593cfdaf9e6fc7b336ef18b0abc87fe55173'
           '7c7de7b30c6c8e1c705dd415692f6a08a3f62c82'
           'd82864959d1a1a07bf75d87c7586dbb713892f3a'
           '291fd5cda9f0845834a553017327c4586bd853f6')
@@ -30,7 +32,8 @@ backup=('etc/mpd.conf')
 
 prepare() {
 	cd "${srcdir}/mpd/"
-        patch --forward --strip=1 --input="${srcdir}/../fmt-v11.patch" 
+        patch --forward --strip=1 --input="${srcdir}/../mpd-sacd-libfmt-v11.patch"
+        patch --forward --strip=1 --input="${srcdir}/../mpd-sacd-libnfs-6.patch"
 	rm -rf build
 	install -d build
 }
@@ -56,7 +59,8 @@ build() {
 		'-Dsacdiso=true'
 		'-Ddvdaiso=false' # temporary disabled
 	)
-	env CC=clang CXX=clang++ arch-meson .. ${_opts[@]}
+#	env CC=clang CXX=clang++ arch-meson .. ${_opts[@]}
+	arch-meson .. ${_opts[@]}
 	ninja
 }
 
