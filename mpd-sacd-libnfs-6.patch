@@ -1,0 +1,169 @@
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd-sacd.git.orig/src/lib/nfs/Connection.cxx mpd-sacd.git/src/lib/nfs/Connection.cxx
+--- mpd-sacd.git.orig/src/lib/nfs/Connection.cxx	2025-01-27 20:31:20.435063768 +0800
++++ mpd-sacd.git/src/lib/nfs/Connection.cxx	2025-01-27 17:31:12.605953911 +0800
+@@ -81,13 +81,28 @@
+ 
+ inline void
+ NfsConnection::CancellableCallback::Read(nfs_context *ctx, struct nfsfh *fh,
+-					 uint64_t offset, size_t size)
++					 uint64_t offset,
++#ifdef LIBNFS_API_2
++					 std::span<std::byte> dest
++#else
++					 std::size_t size
++#endif
++	)
+ {
+ 	assert(connection.GetEventLoop().IsInside());
+ 
+-	int result = nfs_pread_async(ctx, fh, offset, size, Callback, this);
+-	if (result < 0)
+-		throw NfsClientError(ctx, "nfs_pread_async() failed");
++	int result = nfs_pread_async(ctx, fh,
++#ifdef LIBNFS_API_2
++				     dest.data(), dest.size(),
++#endif
++				     offset,
++#ifndef LIBNFS_API_2
++				     size,
++#endif
++				     Callback, this);
++
++    if (result < 0)
++        throw NfsClientError(ctx, "nfs_pread_async() failed");
+ }
+ 
+ inline void
+@@ -306,7 +321,13 @@
+ }
+ 
+ void
+-NfsConnection::Read(struct nfsfh *fh, uint64_t offset, size_t size,
++// NfsConnection::Read(struct nfsfh *fh, uint64_t offset, size_t size,
++NfsConnection::Read(struct nfsfh *fh, uint64_t offset,
++#ifdef LIBNFS_API_2
++		    std::span<std::byte> dest,
++#else
++		    std::size_t size,
++#endif
+ 		    NfsCallback &callback)
+ {
+ 	assert(GetEventLoop().IsInside());
+@@ -314,7 +335,13 @@
+ 
+ 	auto &c = callbacks.Add(callback, *this, false);
+ 	try {
+-		c.Read(context, fh, offset, size);
++		c.Read(context, fh, offset,
++#ifdef LIBNFS_API_2
++		       dest
++#else
++		       size
++#endif
++			);
+ 	} catch (...) {
+ 		callbacks.Remove(c);
+ 		throw;
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd-sacd.git.orig/src/lib/nfs/Connection.hxx mpd-sacd.git/src/lib/nfs/Connection.hxx
+--- mpd-sacd.git.orig/src/lib/nfs/Connection.hxx	2025-01-27 20:31:20.435063768 +0800
++++ mpd-sacd.git/src/lib/nfs/Connection.hxx	2025-01-27 17:32:21.909048092 +0800
+@@ -13,6 +13,7 @@
+ #include <list>
+ #include <forward_list>
+ #include <exception>
++#include <span>
+ 
+ struct nfs_context;
+ struct nfsdir;
+@@ -55,7 +56,13 @@
+ 		void Open(nfs_context *context, const char *path, int flags);
+ 		void Stat(nfs_context *context, struct nfsfh *fh);
+ 		void Read(nfs_context *context, struct nfsfh *fh,
+-			  uint64_t offset, size_t size);
++			  uint64_t offset,
++#ifdef LIBNFS_API_2
++			  std::span<std::byte> dest
++#else
++			  std::size_t size
++#endif
++			);
+ 
+ 		/**
+ 		 * Cancel the operation and schedule a call to
+@@ -177,7 +184,13 @@
+ 	/**
+ 	 * Throws std::runtime_error on error.
+ 	 */
+-	void Read(struct nfsfh *fh, uint64_t offset, size_t size,
++//	void Read(struct nfsfh *fh, uint64_t offset, size_t size,
++	void Read(struct nfsfh *fh, uint64_t offset,
++#ifdef LIBNFS_API_2
++		  std::span<std::byte> dest,
++#else
++		  std::size_t size,
++#endif
+ 		  NfsCallback &callback);
+ 
+ 	void Cancel(NfsCallback &callback) noexcept;
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd-sacd.git.orig/src/lib/nfs/FileReader.cxx mpd-sacd.git/src/lib/nfs/FileReader.cxx
+--- mpd-sacd.git.orig/src/lib/nfs/FileReader.cxx	2025-01-27 20:31:20.435063768 +0800
++++ mpd-sacd.git/src/lib/nfs/FileReader.cxx	2025-01-27 17:11:09.436766489 +0800
+@@ -113,7 +113,16 @@
+ {
+ 	assert(state == State::IDLE);
+ 
++//	connection->Read(fh, offset, size, *this);
++#ifdef LIBNFS_API_2
++	assert(!read_buffer);
++	// TOOD read into caller-provided buffer
++	read_buffer = std::make_unique<std::byte[]>(size);
++	connection->Read(fh, offset, {read_buffer.get(), size}, *this);
++#else
+ 	connection->Read(fh, offset, size, *this);
++#endif
++
+ 	state = State::READ;
+ }
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd-sacd.git.orig/src/lib/nfs/FileReader.hxx mpd-sacd.git/src/lib/nfs/FileReader.hxx
+--- mpd-sacd.git.orig/src/lib/nfs/FileReader.hxx	2025-01-27 20:31:20.435063768 +0800
++++ mpd-sacd.git/src/lib/nfs/FileReader.hxx	2025-01-27 17:13:52.529484092 +0800
+@@ -14,6 +14,10 @@
+ #include <span>
+ #include <string>
+ 
++#ifdef LIBNFS_API_2
++#include <memory>
++#endif
++
+ #include <sys/stat.h>
+ 
+ struct nfsfh;
+@@ -52,6 +56,10 @@
+ 	 */
+ 	InjectEvent defer_open;
+ 
++#ifdef LIBNFS_API_2
++	std::unique_ptr<std::byte[]> read_buffer;
++#endif
++
+ public:
+ 	NfsFileReader() noexcept;
+ 	~NfsFileReader() noexcept;
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd-sacd.git.orig/src/lib/nfs/meson.build mpd-sacd.git/src/lib/nfs/meson.build
+--- mpd-sacd.git.orig/src/lib/nfs/meson.build	2025-01-27 20:31:20.435063768 +0800
++++ mpd-sacd.git/src/lib/nfs/meson.build	2025-01-27 17:15:52.749466964 +0800
+@@ -4,6 +4,13 @@
+   subdir_done()
+ endif
+ 
++if nfs_dep.version().version_compare('>=6')
++  # libnfs has no version macro therefore we must detect the API
++  # version 2 at configure time
++  nfs_dep = declare_dependency(compile_args: '-DLIBNFS_API_2',
++                               dependencies: nfs_dep)
++endif
++
+ nfs = static_library(
+   'nfs',
+   'Connection.cxx',
