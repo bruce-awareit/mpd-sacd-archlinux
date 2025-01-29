@@ -1,0 +1,34 @@
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text sacddecoder-mpd-MPD-45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da/src/unix/Daemon.cxx mpd/src/unix/Daemon.cxx
+--- sacddecoder-mpd-MPD-45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da/src/unix/Daemon.cxx	2025-01-28 09:18:48.000000000 +0800
++++ mpd/src/unix/Daemon.cxx	2025-01-29 15:50:55.138278507 +0800
+@@ -187,7 +187,12 @@
+ 		/* tell the parent process to let go of us and exit
+ 		   indicating success */
+ 		int result = 0;
+-		write(detach_fd, &result, sizeof(result));
++		ssize_t wr_result = write(detach_fd, &result, sizeof(result));
++		if (wr_result == -1) {
++        // deal with write errors.
++        perror("write");
++        // quit or retry.
++        }
+ 		close(detach_fd);
+ 	} else
+ 		/* the pidfile was not written by the parent because
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text sacddecoder-mpd-MPD-45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da/src/unix/PidFile.hxx mpd/src/unix/PidFile.hxx
+--- sacddecoder-mpd-MPD-45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da/src/unix/PidFile.hxx	2025-01-28 09:18:48.000000000 +0800
++++ mpd/src/unix/PidFile.hxx	2025-01-29 15:49:22.858420310 +0800
+@@ -58,7 +58,12 @@
+ 
+ 		const auto s = FmtBuffer<64>("{}\n", pid);
+ 
+-		write(fd, s.c_str(), strlen(s.c_str()));
++		ssize_t result = write(fd, s.c_str(), strlen(s.c_str()));
++		if (result == -1) {
++        // deal with write errors.
++        perror("write");
++        // quit or retry.
++        }
+ 		close(fd);
+ 	}
+ 

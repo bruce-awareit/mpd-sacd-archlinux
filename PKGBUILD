@@ -19,12 +19,14 @@ provides=("mpd=${pkgver}")
 source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=45f0d8fbce0f52b9aca1f9cce96dcf9c9e1413da'
         'mpd-sacd-libfmt-v11.patch'
 	'mpd-sacd-libnfs-6.patch'
+        'mpd-minor-compile-errors.patch'
         'sysusers.d'
 	'tmpfiles.d'
 	'conf')
 sha1sums=('SKIP'
           '2d0c4b8f20791e03cab40a4058e17ad4144d522a'
           '9718593cfdaf9e6fc7b336ef18b0abc87fe55173'
+          '04e63687f5750d13222d0d16ddbb419ee9c00de0'
           '7c7de7b30c6c8e1c705dd415692f6a08a3f62c82'
           'd82864959d1a1a07bf75d87c7586dbb713892f3a'
           '291fd5cda9f0845834a553017327c4586bd853f6')
@@ -34,6 +36,7 @@ prepare() {
 	cd "${srcdir}/mpd/"
         patch --forward --strip=1 --input="${srcdir}/../mpd-sacd-libfmt-v11.patch"
         patch --forward --strip=1 --input="${srcdir}/../mpd-sacd-libnfs-6.patch"
+        patch --forward --strip=1 --input="${srcdir}/../mpd-minor-compile-errors.patch"
 	rm -rf build
 	install -d build
 }
