@@ -13,7 +13,7 @@ pkgver=0.23.17
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64)
-url="https://www.musicpd.org/"
+url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
 license=(
   BSD-2-Clause
   GPL-2.0-or-later
@@ -47,7 +47,7 @@ makedepends=(
   avahi
   boost
   bzip2
-  # chromaprint
+  chromaprint
   curl
   dbus
   expat
@@ -106,11 +106,11 @@ validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@
 build() {
   local _meson_options=(
     -D documentation=enabled
-    -D chromaprint=disabled # appears not to be used for anything
+    -D chromaprint=enabled 
     -D sidplay=disabled # unclear why but disabled in the past
     -D adplug=disabled # not in an official repo
     -D audiofile=disabled 
-    -D nfs=enabled
+    -D nfs=disabled
     -D sndio=disabled # interferes with detection of alsa devices
     -D shine=disabled # not in an official repo
     -D tremor=disabled # not in official repo
@@ -119,6 +119,7 @@ build() {
     -D soundcloud=disabled
     -D pipe=true
     -D pulse=enabled
+    -D pipewire=enabled
     -D qobuz=disabled
     -D zzip=enabled
     -D b_ndebug=true
@@ -129,7 +130,8 @@ build() {
   # NOTE: sndio conflicts with alsa
   # TODO: package adplug
   # TODO: package shine
-  env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}"
+  # env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}"
+  arch-meson $programname build "${_meson_options[@]}"
   meson compile -C build
 }
 
