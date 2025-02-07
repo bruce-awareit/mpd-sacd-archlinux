@@ -104,6 +104,7 @@ b2sums=('SKIP'
 validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@blarg.de>
 
 build() {
+
   local _meson_options=(
     -D documentation=enabled
     -D chromaprint=enabled 
@@ -130,8 +131,8 @@ build() {
   # NOTE: sndio conflicts with alsa
   # TODO: package adplug
   # TODO: package shine
-  # env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}"
-  arch-meson $programname build "${_meson_options[@]}"
+  env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++20
+  # arch-meson $programname build "${_meson_options[@]}"
   meson compile -C build
 }
 
