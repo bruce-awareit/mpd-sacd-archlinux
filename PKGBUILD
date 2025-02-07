@@ -85,7 +85,7 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=f04fd126085012d1ceb278541858827b55257fe5
+  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=da7e292556a0f1e1d6a4ede3cebc2753b9af88fe
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
