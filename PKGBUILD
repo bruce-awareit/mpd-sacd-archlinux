@@ -9,8 +9,8 @@
 
 pkgname=mpd-sacd
 programname=mpd
-pkgver=0.23.17
-pkgrel=1
+pkgver=0.24.3
+pkgrel=2
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
@@ -66,7 +66,7 @@ makedepends=(
   libmpdclient
   libogg
   libopenmpt
-  libpulse
+  # libpulse
   libsamplerate
   libsndfile
   libupnp
@@ -81,11 +81,13 @@ makedepends=(
   sqlite
   systemd
   twolame
-  yajl
+  # yajl
+  nlohmann-json
 )
 backup=(etc/$programname.conf)
 source=(
-  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=1ea14e335cf7b2af2004586d004996d431e956ad
+#  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=1ea14e335cf7b2af2004586d004996d431e956ad
+  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=6757a2d9bd8e7b66b66a04e287e0eb8c27c3c084
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
@@ -111,28 +113,28 @@ build() {
     -D sidplay=disabled # unclear why but disabled in the past
     -D adplug=disabled # not in an official repo
     -D audiofile=disabled 
-    -D nfs=disabled
+    -D nfs=disabled # not need this option.
     -D sndio=disabled # interferes with detection of alsa devices
     -D shine=disabled # not in an official repo
     -D tremor=disabled # not in official repo
     -D iso9660=enabled
     -D libmpdclient=enabled
-    -D soundcloud=disabled
+    # -D soundcloud=disabled # remove defunct plugin
     -D pipe=true
-    -D pulse=enabled
+    -D pulse=disabled
     -D pipewire=enabled
-    -D qobuz=disabled
+    -D qobuz=disabled # not need this option.
     -D zzip=enabled
     -D b_ndebug=true
     -D sacdiso=true
-    -D dvdaiso=false #temporary disabled
+    -D dvdaiso=false # note need this option.
   )
 
   # NOTE: sndio conflicts with alsa
   # TODO: package adplug
   # TODO: package shine
-  env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++20
-  # arch-meson $programname build "${_meson_options[@]}"
+  # env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++20
+  arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
   meson compile -C build
 }
 
@@ -164,7 +166,7 @@ package() {
     libogg libogg.so
     libopenmpt libopenmpt.so
     libpipewire libpipewire-0.3.so
-    libpulse libpulse.so
+    # libpulse libpulse.so
     libsamplerate libsamplerate.so
     libsndfile libsndfile.so
     libupnp libixml.so libupnp.so
@@ -176,7 +178,7 @@ package() {
     sqlite libsqlite3.so
     systemd-libs libsystemd.so
     twolame libtwolame.so
-    yajl libyajl.so
+    # yajl libyajl.so
   )
 
   meson install -C build --destdir "$pkgdir"
