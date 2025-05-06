@@ -125,7 +125,7 @@ build() {
     -D zzip=enabled
     -D b_ndebug=true
     -D sacdiso=true
-    -D dvdaiso=true
+    -D dvdaiso=false # not need this option.
   )
 
   # NOTE: sndio conflicts with alsa
