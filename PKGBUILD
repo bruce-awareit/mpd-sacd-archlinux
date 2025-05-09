@@ -10,7 +10,7 @@
 pkgname=mpd-sacd
 programname=mpd
 pkgver=0.24.3
-pkgrel=3
+pkgrel=4
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
@@ -86,7 +86,7 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=deceede566c04df8c7df096502e3914a2160d232
+  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=432fbccba376ce974029d32c3fd6cbf2957e73b1
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
