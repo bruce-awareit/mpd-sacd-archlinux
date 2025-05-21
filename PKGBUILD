@@ -9,8 +9,8 @@
 
 pkgname=mpd-sacd
 programname=mpd
-pkgver=0.24.3
-pkgrel=5
+pkgver=0.25.0
+pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
@@ -66,7 +66,7 @@ makedepends=(
   libmpdclient
   libogg
   libopenmpt
-  # libpulse
+  libpulse
   libsamplerate
   libsndfile
   libupnp
@@ -86,7 +86,7 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=642ad03fd6d33bbd0ec60efa25b3945348e575d8
+  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=29ead033835f7ff032d2b23e627dd3b8d48c2593
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
@@ -119,7 +119,7 @@ build() {
     -D iso9660=enabled
     -D libmpdclient=enabled
     -D pipe=true
-    -D pulse=disabled
+    -D pulse=enabled
     -D pipewire=enabled
     -D qobuz=disabled # not need this option.
     -D zzip=enabled
@@ -131,8 +131,8 @@ build() {
   # NOTE: sndio conflicts with alsa
   # TODO: package adplug
   # TODO: package shine
-  env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
-  #arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
+  # env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
+  arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
   meson compile -C build
 }
 
