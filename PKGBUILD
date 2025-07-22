@@ -6,13 +6,14 @@
 # Contributor: Andrea Scarpino <andrea@archlinux.org>
 # Contributor: Damir Perisa <damir.perisa@bluewin.ch>
 # Contributor: Ben <ben@benmazer.net>
+# Contributor: Foodle <bruce[at]mail.kh.edu.tw>
 
 pkgname=mpd-sacd
 programname=mpd
 pkgver=0.25.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Flexible, powerful, server-side application for playing music"
-arch=(x86_64)
+arch=(x86_64 ARM64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
 license=(
   BSD-2-Clause
@@ -86,7 +87,7 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=29ead033835f7ff032d2b23e627dd3b8d48c2593
+  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=191ad0e58b9efba8757aed8f8c454ce5f6a9ab08
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
@@ -119,9 +120,9 @@ build() {
     -D iso9660=enabled
     -D libmpdclient=enabled
     -D pipe=true
-    -D pulse=enabled
+    -D pulse=disabled
     -D pipewire=enabled
-    -D qobuz=disabled # not need this option.
+    -D qobuz=disabled # turn off this option.
     -D zzip=enabled
     -D b_ndebug=true
     -D sacdiso=true
