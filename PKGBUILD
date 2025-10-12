@@ -11,7 +11,7 @@
 pkgname=mpd-sacd
 programname=mpd
 pkgver=0.25.0
-pkgrel=2
+pkgrel=3
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
@@ -42,6 +42,10 @@ depends=(
   wildmidi
   zlib
   zziplib
+)
+optdepends=(
+'pipewire-jack'
+'jack2'
 )
 makedepends=(
   alsa-lib
@@ -107,6 +111,8 @@ validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@
 
 build() {
 
+  export MAKEFLAGS="-j$(nproc)"
+  
   local _meson_options=(
     -D documentation=enabled
     -D chromaprint=enabled 
