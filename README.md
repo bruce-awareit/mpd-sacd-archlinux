@@ -14,7 +14,7 @@ Thanks to [Maxim V. Anisiutkin](https://sourceforge.net/u/manisiutkin/profile/) 
     cd mpd-sacd-archlinux
 ```
 3. ```diff
-   ! If you don't need to listen to `Steam` audio, you can skip this step and proceed directly to the 4th step to install mpd-sacd.}$$
+   ! If you don't need to listen to `Steam` audio, you can skip this step and proceed directly to the 4th step to install mpd-sacd.
    ```
    In this `PKGBUILD`, the `vgmstream` option has been disabled. This option enables playback of `Steam` audio files.  
    If you need this functionality, please follow the steps below to enable it:
