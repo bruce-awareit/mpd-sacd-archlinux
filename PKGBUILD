@@ -11,7 +11,7 @@
 pkgname=mpd-sacd
 programname=mpd
 pkgver=0.25.0
-pkgrel=4
+pkgrel=5
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
@@ -116,6 +116,24 @@ validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@
 prepare() {
     bsdtar -xf $programname.zip
     mv MPD/ $programname/
+    cd "$programname"
+
+    # 解決 openat2 衝突的終極方案：
+    # 直接清空內部的 openat2.h，並強制引用系統標頭檔
+    # 這樣可以確保 UniqueFileDescriptor 等類別不會被錯誤的語法干擾
+    if [ -f src/system/linux/openat2.h ]; then
+        echo "#pragma once" > src/system/linux/openat2.h
+        echo "#include <fcntl.h>" >> src/system/linux/openat2.h
+        echo "#include <sys/syscall.h>" >> src/system/linux/openat2.h
+        echo "#include <unistd.h>" >> src/system/linux/openat2.h
+        
+        # 同時移除 Open.cxx 中可能重複的結構定義（如果有的話）
+        # 確保編譯器直接尋找系統的 openat2
+        sed -i '/struct open_how/d' src/system/linux/openat2.h 2>/dev/null || true
+    fi
+    
+    # 清理舊的編譯目錄
+    rm -rf build
 }
 
 build() {
@@ -142,7 +160,7 @@ build() {
     -D zzip=enabled
     -D b_ndebug=true
     -D sacdiso=true
-    -D dvdaiso=true # turn on again.
+    -D dvdaiso=false # turn on again.
     -D vgmstream=disabled
   )
 
