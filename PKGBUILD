@@ -10,8 +10,8 @@
 
 pkgname=mpd-sacd
 programname=mpd
-pkgver=0.25.0
-pkgrel=5
+pkgver=0.25.g9a4f431
+pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
 url="https://sourceforge.net/projects/mpd.sacddecoder.p/"
@@ -93,46 +93,40 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-#  $programname::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=85bca365e3dc3fa752b45faa5bdaad22028e9429
-  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-0.25.zip?viasf=1
+  ${pkgname}::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=9a4f4318077ddd576bdb6960797d551ebbe2b144
+#  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-0.25.zip?viasf=1
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
   $programname.service.override
 )
-sha512sums=('28539155f25411eeafa66d552d2e5cf67dd05e907bf3ca8bfdb19fed4e9cbe7d39370ef8c70786e1837fd01351a2f001dd52356c7967aa987837a9b089961be0'
-     '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
-     'd66c1d771160ee1781a05e57f383acc466babb29924c07d83ac0e763c14380dd1f279ba7b4aec508dc70245370d9732b4bc6287df1a2e06a920f3b73551d3032'
-     'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
-     'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
-b2sums=('cc9a1c30e16c0ff2c41f2290d6c88be9af2c55ed187d5eae30b87dcf5b268220196f2a9e15d7fe2b872bcc5e4206dbc05194d0a7e25b2f262a53d1d8a434327c'
-     '0969a3c477b6a3f34b44e067e515d7f306414dd14e0163584417b9d071e3cc825898219f7ff66ead7905b15429b8411304052d3b2b14a72e560bfabf9bf0adcf'
-     '814c2314de6040e895657a8c8d62f11bc38c224a3c0ef5cbf280c0e141c80f04b0ac5026be06fd5dc4a4b764f3d91ab46f365da0a7bd466abc3aed02b0612165'
-     'd7b587c25dd5830c27af475a8fdd8102139d7c8fdd6f04fe23b36be030e4411582e289f575c299255ff8183096f7d47247327276f9a24641cbd032d9675b837a'
-     '753664445d7d5cc0b36f51ac66549beea403b9731cbcb81b0a782974a0a73d90559ba93e6afcaa470b6f2f5a844c09ef695bdf3b1e6dfee97aa080f41b7fe513')
+sha512sums=('5dfbca328441ecc0fc4058be6307bd4a72d77934f42d0b4cec2d68de05693eb480d1d7d4b355ec7215a244330333b701cedb2ec61264b22983c9c317508f0469'
+            '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
+            'd66c1d771160ee1781a05e57f383acc466babb29924c07d83ac0e763c14380dd1f279ba7b4aec508dc70245370d9732b4bc6287df1a2e06a920f3b73551d3032'
+            'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
+            'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
+b2sums=('9cf8ba09b3cc2f71188e0866eced115f81f19896722e53cfc0b04ccd4bc7e03df7955aef0e7202485f49c8ff496f7fedd3fa4b33b4149e9e8fc45a9f52795868'
+        '0969a3c477b6a3f34b44e067e515d7f306414dd14e0163584417b9d071e3cc825898219f7ff66ead7905b15429b8411304052d3b2b14a72e560bfabf9bf0adcf'
+        '814c2314de6040e895657a8c8d62f11bc38c224a3c0ef5cbf280c0e141c80f04b0ac5026be06fd5dc4a4b764f3d91ab46f365da0a7bd466abc3aed02b0612165'
+        'd7b587c25dd5830c27af475a8fdd8102139d7c8fdd6f04fe23b36be030e4411582e289f575c299255ff8183096f7d47247327276f9a24641cbd032d9675b837a'
+        '753664445d7d5cc0b36f51ac66549beea403b9731cbcb81b0a782974a0a73d90559ba93e6afcaa470b6f2f5a844c09ef695bdf3b1e6dfee97aa080f41b7fe513')
 
 validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@blarg.de>
 
-prepare() {
-    bsdtar -xf $programname.zip
-    mv MPD/ $programname/
-    cd "$programname"
+pkgver() {
+  cd ${programname}
+  ( set -o pipefail
+    local relver="0.25"
+    local shorthash=$(git rev-parse --short=7 HEAD)
+    printf '%s.g%s' "${relver}" "${shorthash}"
+  )
+}
 
-    # 解決 openat2 衝突的終極方案：
-    # 直接清空內部的 openat2.h，並強制引用系統標頭檔
-    # 這樣可以確保 UniqueFileDescriptor 等類別不會被錯誤的語法干擾
-    if [ -f src/system/linux/openat2.h ]; then
-        echo "#pragma once" > src/system/linux/openat2.h
-        echo "#include <fcntl.h>" >> src/system/linux/openat2.h
-        echo "#include <sys/syscall.h>" >> src/system/linux/openat2.h
-        echo "#include <unistd.h>" >> src/system/linux/openat2.h
-        
-        # 同時移除 Open.cxx 中可能重複的結構定義（如果有的話）
-        # 確保編譯器直接尋找系統的 openat2
-        sed -i '/struct open_how/d' src/system/linux/openat2.h 2>/dev/null || true
-    fi
-    
-    # 清理舊的編譯目錄
+prepare() {
+    # bsdtar -xf $programname.zip
+    mv ${pkgname}/ ${programname}/
+    cd ${programname}
+
     rm -rf build
 }
 
@@ -160,7 +154,7 @@ build() {
     -D zzip=enabled
     -D b_ndebug=true
     -D sacdiso=true
-    -D dvdaiso=false # turn on again.
+    -D dvdaiso=true # turn on again.
     -D vgmstream=disabled
   )
 
