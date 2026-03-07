@@ -10,7 +10,7 @@
 
 pkgname=mpd-sacd
 programname=mpd
-pkgver=0.25.g9a4f431
+pkgver=0.25.g664c8ee
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -93,19 +93,19 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-  ${pkgname}::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=9a4f4318077ddd576bdb6960797d551ebbe2b144
-#  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-0.25.zip?viasf=1
+#  ${pkgname}::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=9a4f4318077ddd576bdb6960797d551ebbe2b144
+  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-0.25.zip?viasf=1
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
   $programname.service.override
 )
-sha512sums=('5dfbca328441ecc0fc4058be6307bd4a72d77934f42d0b4cec2d68de05693eb480d1d7d4b355ec7215a244330333b701cedb2ec61264b22983c9c317508f0469'
+sha512sums=('d80c808add332ec8ee73fa25d9d71cbb6c04f54f60866b0b76e09f608f5b88e652c00e2f1a5429fc127300a1a5766ee39a7a2b7bf10cfe1f12d23f2b7d4e7649'
             '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
             'd66c1d771160ee1781a05e57f383acc466babb29924c07d83ac0e763c14380dd1f279ba7b4aec508dc70245370d9732b4bc6287df1a2e06a920f3b73551d3032'
             'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
             'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
-b2sums=('9cf8ba09b3cc2f71188e0866eced115f81f19896722e53cfc0b04ccd4bc7e03df7955aef0e7202485f49c8ff496f7fedd3fa4b33b4149e9e8fc45a9f52795868'
+b2sums=('56dacc5173016d225191b28bac17cd19b97d96b235f401521b3c909a911cdd70f5cead827c4e9dc138f0c03fa0b98a1075684a29cb93911d65503a5390dd5939'
         '0969a3c477b6a3f34b44e067e515d7f306414dd14e0163584417b9d071e3cc825898219f7ff66ead7905b15429b8411304052d3b2b14a72e560bfabf9bf0adcf'
         '814c2314de6040e895657a8c8d62f11bc38c224a3c0ef5cbf280c0e141c80f04b0ac5026be06fd5dc4a4b764f3d91ab46f365da0a7bd466abc3aed02b0612165'
         'd7b587c25dd5830c27af475a8fdd8102139d7c8fdd6f04fe23b36be030e4411582e289f575c299255ff8183096f7d47247327276f9a24641cbd032d9675b837a'
@@ -114,7 +114,7 @@ b2sums=('9cf8ba09b3cc2f71188e0866eced115f81f19896722e53cfc0b04ccd4bc7e03df7955ae
 validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@blarg.de>
 
 pkgver() {
-  cd ${programname}
+  cd ${programname}/
   ( set -o pipefail
     local relver="0.25"
     local shorthash=$(git rev-parse --short=7 HEAD)
@@ -123,11 +123,8 @@ pkgver() {
 }
 
 prepare() {
-    # bsdtar -xf $programname.zip
-    mv ${pkgname}/ ${programname}/
-    cd ${programname}
-
-    rm -rf build
+    bsdtar -xf $programname.zip
+    mv MPD/ ${programname}/
 }
 
 build() {
