@@ -10,7 +10,7 @@
 
 pkgname=mpd-sacd
 programname=mpd
-pkgver=0.25.g664c8ee
+pkgver=0.25.gf1ecf2f
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -94,18 +94,18 @@ makedepends=(
 backup=(etc/$programname.conf)
 source=(
 #  ${pkgname}::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=9a4f4318077ddd576bdb6960797d551ebbe2b144
-  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-0.25.zip?viasf=1
+  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-master.zip?viasf=1
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
   $programname.service.override
 )
-sha512sums=('d80c808add332ec8ee73fa25d9d71cbb6c04f54f60866b0b76e09f608f5b88e652c00e2f1a5429fc127300a1a5766ee39a7a2b7bf10cfe1f12d23f2b7d4e7649'
+sha512sums=('8e816ac49825eab80c23eca68dcf13a0a9c02a8f76c7ffaf62aa288b73efe6f94d61d409cbd974076de134024ef1cf0d16a7f5000ac1c66eb2fc890fa473e97f'
             '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
             'd66c1d771160ee1781a05e57f383acc466babb29924c07d83ac0e763c14380dd1f279ba7b4aec508dc70245370d9732b4bc6287df1a2e06a920f3b73551d3032'
             'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
             'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
-b2sums=('56dacc5173016d225191b28bac17cd19b97d96b235f401521b3c909a911cdd70f5cead827c4e9dc138f0c03fa0b98a1075684a29cb93911d65503a5390dd5939'
+b2sums=('b0be94e3b1285678be7c1453488a5ef2bc56e4b3f6b4d5c6a6a5a411d5875ce455b9d7588153384b812cc220aa21fc2139f18141ca16456a4f886ecd5c65ca72'
         '0969a3c477b6a3f34b44e067e515d7f306414dd14e0163584417b9d071e3cc825898219f7ff66ead7905b15429b8411304052d3b2b14a72e560bfabf9bf0adcf'
         '814c2314de6040e895657a8c8d62f11bc38c224a3c0ef5cbf280c0e141c80f04b0ac5026be06fd5dc4a4b764f3d91ab46f365da0a7bd466abc3aed02b0612165'
         'd7b587c25dd5830c27af475a8fdd8102139d7c8fdd6f04fe23b36be030e4411582e289f575c299255ff8183096f7d47247327276f9a24641cbd032d9675b837a'
@@ -124,7 +124,7 @@ pkgver() {
 
 prepare() {
     bsdtar -xf $programname.zip
-    mv MPD/ ${programname}/
+    mv MPD-master/ ${programname}/
 }
 
 build() {
