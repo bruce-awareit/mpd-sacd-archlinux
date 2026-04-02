@@ -10,7 +10,7 @@
 
 pkgname=mpd-sacd
 programname=mpd
-pkgver=0.25.gf1ecf2f
+pkgver=0.24.10.g7911778
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -116,7 +116,7 @@ validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@
 pkgver() {
   cd ${programname}/
   ( set -o pipefail
-    local relver="0.25"
+    local relver="0.24.10"
     local shorthash=$(git rev-parse --short=7 HEAD)
     printf '%s.g%s' "${relver}" "${shorthash}"
   )
@@ -125,6 +125,8 @@ pkgver() {
 prepare() {
     bsdtar -xf $programname.zip
     mv MPD-master/ ${programname}/
+    cd ${programname}/
+    patch --forward --strip=1 --input="${srcdir}/../mpd.patch"
 }
 
 build() {
