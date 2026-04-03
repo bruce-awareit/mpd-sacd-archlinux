@@ -8,9 +8,9 @@
 # Contributor: Ben <ben@benmazer.net>
 # Contributor: Foodle <bruce[at]mail.kh.edu.tw>
 
-pkgname=mpd-sacd
+pkgname=mpd-sacd-ArchLinux
 programname=mpd
-pkgver=0.24.10.g7911778
+pkgver=0.25.g92d4e76
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -19,7 +19,7 @@ license=(
   BSD-2-Clause
   GPL-2.0-or-later
 )
-conflicts=('mpd')
+conflicts=('mpd' 'mpd-sacd')
 provides=("mpd=${pkgver}")
 depends=(
   gcc-libs
@@ -111,12 +111,10 @@ b2sums=('b0be94e3b1285678be7c1453488a5ef2bc56e4b3f6b4d5c6a6a5a411d5875ce455b9d75
         'd7b587c25dd5830c27af475a8fdd8102139d7c8fdd6f04fe23b36be030e4411582e289f575c299255ff8183096f7d47247327276f9a24641cbd032d9675b837a'
         '753664445d7d5cc0b36f51ac66549beea403b9731cbcb81b0a782974a0a73d90559ba93e6afcaa470b6f2f5a844c09ef695bdf3b1e6dfee97aa080f41b7fe513')
 
-validpgpkeys=('0392335A78083894A4301C43236E8A58C6DB4512') # Max Kellermann <max@blarg.de>
-
 pkgver() {
   cd ${programname}/
   ( set -o pipefail
-    local relver="0.24.10"
+    local relver="0.25"
     local shorthash=$(git rev-parse --short=7 HEAD)
     printf '%s.g%s' "${relver}" "${shorthash}"
   )

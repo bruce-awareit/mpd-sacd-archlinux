@@ -4,6 +4,8 @@ An update for [mpd-sacd@aur.archlinux.org](https://aur.archlinux.org/packages/mp
 
 Thanks to [Maxim V. Anisiutkin](https://sourceforge.net/u/manisiutkin/profile/) and his outstanding work on the [Music Player Daemon SACD/DVD-A ISO decoder plugins](https://sourceforge.net/projects/mpd.sacddecoder.p/), listening to music from SACD ISO files on Linux is now possible.  
 
+Maxim V. Ansiutkin's  source code moved from Sourceforge to [Github](https://github.com/manisiutkin/MPD) on March 2026. And the released source ball is still on [Sourceforge](https://sourceforge.net/projects/mpd.sacddecoder.p/files/).
+
 ## Installation
 1. Get all the files from Github.com
 ```bash
