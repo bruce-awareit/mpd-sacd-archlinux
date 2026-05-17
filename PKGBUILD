@@ -10,7 +10,7 @@
 
 pkgname=mpd-sacd-ArchLinux
 programname=mpd
-pkgver=0.25.g8d43b7b
+pkgver=0.25.gd919dac
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -154,6 +154,7 @@ build() {
     -D sacdiso=true
     -D dvdaiso=true # turn on again.
     -D vgmstream=disabled
+    -D psgplay=disabled
   )
 
   # NOTE: sndio conflicts with alsa
