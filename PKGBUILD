@@ -10,7 +10,7 @@
 
 pkgname=mpd-sacd-ArchLinux
 programname=mpd
-pkgver=0.25.gd919dac
+pkgver=0.25.g4ef0d37
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -93,8 +93,7 @@ makedepends=(
 )
 backup=(etc/$programname.conf)
 source=(
-#  ${pkgname}::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=9a4f4318077ddd576bdb6960797d551ebbe2b144
-#  ${pkgname}::git+https://github.com/manisiutkin/MPD.git
+#  ${programname}::git+https://github.com/manisiutkin/MPD.git
   $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-master.zip?viasf=1\&fid=5446160c680f1b37
   $programname.conf
   $programname.sysusers
@@ -161,6 +160,8 @@ build() {
   # TODO: package adplug
   # TODO: package shine
   # env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
+  export CC=/usr/bin/gcc-15
+  export CXX=/usr/bin/g++-15
   arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
   meson compile -C build
 }
