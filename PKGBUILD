@@ -10,7 +10,7 @@
 
 pkgname=mpd-sacd-ArchLinux
 programname=mpd
-pkgver=0.25.g4ef0d37
+pkgver=0.25.g3ef1697
 pkgrel=1
 pkgdesc="Flexible, powerful, server-side application for playing music"
 arch=(x86_64 ARM64)
@@ -94,18 +94,18 @@ makedepends=(
 backup=(etc/$programname.conf)
 source=(
 #  ${programname}::git+https://github.com/manisiutkin/MPD.git
-  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-master.zip?viasf=1\&fid=5446160c680f1b37
+  $programname.zip::https://master.dl.sourceforge.net/project/mpd.sacddecoder.p/MPD-master.zip?viasf=1\&fid=26df1844567557e4
   $programname.conf
   $programname.sysusers
   $programname.tmpfiles
   $programname.service.override
 )
-sha512sums=('19db59d47fc2b429d5184746654009be0bfac8cb3d61aba6845e0cd2bfed9c6e24c6ea447f140610a296fcdaebaaba9f5c945053954a52e477ee8fcefb43bce8'
+sha512sums=('3b523ee1cac40fc5754fba2a21d8428e02448465ac7727bb15d81b878de08d8ba3f7a296ca8a7fb655ffe29c9a75c089467b0847172fcea00d91ee9d87c4e365'
             '25a823740d92da8e186916701413114142eb6ad91a172c592e68b569c8e4f50fa99580e555ccf6cd31fc4f55a09bfe0278efa46e4e76ee0fe02846292fadf3c1'
             'd66c1d771160ee1781a05e57f383acc466babb29924c07d83ac0e763c14380dd1f279ba7b4aec508dc70245370d9732b4bc6287df1a2e06a920f3b73551d3032'
             'db473db27cd68994c3ee26e78e0fb34d13126301d8861563dcc12a22d62ecb14c4ffb1e0798c6aaccdff34e73bae3fbeeff7b42606c901a2d35e278865cdf35d'
             'c1782b82f9db1d30aece43a07230c5d57370f2494a16e108af03815d83968805472f10f53ea5495cf0e08ff8f245430c3c3bc44025af43aaf9ecd12fcd6afc6c')
-b2sums=('a0d968519b94acc10b761d40ca66a6ffe118848d50fc9bca969f2afb60ab25ed977ad821d623f897457a7f9b4b68a61f014aef1cad9339eaba7cf7f885b09643'
+b2sums=('6a20c60698a1f9d81177874c07fd2640d1f963546654756329cccb8f657b127d8525fc453daac7d33ba1d10accb69aa4968ac0f2e7f9756e6e5ccb3d8f2e470a'
         '0969a3c477b6a3f34b44e067e515d7f306414dd14e0163584417b9d071e3cc825898219f7ff66ead7905b15429b8411304052d3b2b14a72e560bfabf9bf0adcf'
         '814c2314de6040e895657a8c8d62f11bc38c224a3c0ef5cbf280c0e141c80f04b0ac5026be06fd5dc4a4b764f3d91ab46f365da0a7bd466abc3aed02b0612165'
         'd7b587c25dd5830c27af475a8fdd8102139d7c8fdd6f04fe23b36be030e4411582e289f575c299255ff8183096f7d47247327276f9a24641cbd032d9675b837a'
@@ -160,8 +160,6 @@ build() {
   # TODO: package adplug
   # TODO: package shine
   # env CC=clang CXX=clang++ arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
-  export CC=/usr/bin/gcc-15
-  export CXX=/usr/bin/g++-15
   arch-meson $programname build "${_meson_options[@]}" -D c_args="-std=c11" -D cpp_std=c++23
   meson compile -C build
 }

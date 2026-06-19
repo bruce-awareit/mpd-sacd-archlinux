@@ -1,6 +1,149 @@
-diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/lib/dvdaiso/meson.build mpd.new/src/lib/dvdaiso/meson.build
---- mpd.orig/src/lib/dvdaiso/meson.build	2026-03-07 15:40:47.000000000 +0800
-+++ mpd.new/src/lib/dvdaiso/meson.build	2026-04-02 13:39:15.785708570 +0800
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/client/New.cxx new.MPD-master/src/client/New.cxx
+--- old.MPD-master/src/client/New.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/client/New.cxx	2026-06-19 19:58:05.703897317 +0800
+@@ -18,6 +18,9 @@
+ #include "Version.h"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/client/Response.hxx new.MPD-master/src/client/Response.hxx
+--- old.MPD-master/src/client/Response.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/client/Response.hxx	2026-06-19 19:58:05.704023174 +0800
+@@ -6,6 +6,9 @@
+ #include "protocol/Ack.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cstddef>
+ #include <span>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/CommandLine.cxx new.MPD-master/src/CommandLine.cxx
+--- old.MPD-master/src/CommandLine.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/CommandLine.cxx	2026-06-19 19:58:05.704169417 +0800
+@@ -61,6 +61,9 @@
+ #endif
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ namespace {
+ #ifdef _WIN32
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/db/plugins/upnp/UpnpDatabasePlugin.cxx new.MPD-master/src/db/plugins/upnp/UpnpDatabasePlugin.cxx
+--- old.MPD-master/src/db/plugins/upnp/UpnpDatabasePlugin.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/db/plugins/upnp/UpnpDatabasePlugin.cxx	2026-06-19 19:58:05.704354817 +0800
+@@ -25,6 +25,9 @@
+ #include "config/Block.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ #include <string>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/db/update/Playlist.cxx new.MPD-master/src/db/update/Playlist.cxx
+--- old.MPD-master/src/db/update/Playlist.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/db/update/Playlist.cxx	2026-06-19 19:58:05.704524643 +0800
+@@ -21,6 +21,9 @@
+ #include "Log.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ inline void
+ UpdateWalk::UpdatePlaylistFile(Directory &directory,
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/input/plugins/AlsaInputPlugin.cxx new.MPD-master/src/input/plugins/AlsaInputPlugin.cxx
+--- old.MPD-master/src/input/plugins/AlsaInputPlugin.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/input/plugins/AlsaInputPlugin.cxx	2026-06-19 19:58:05.704685449 +0800
+@@ -28,6 +28,9 @@
+ #include <alsa/asoundlib.h>
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/input/plugins/QobuzClient.cxx new.MPD-master/src/input/plugins/QobuzClient.cxx
+--- old.MPD-master/src/input/plugins/QobuzClient.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/input/plugins/QobuzClient.cxx	2026-06-19 19:58:05.704846643 +0800
+@@ -6,6 +6,9 @@
+ #include "thread/ScopeUnlock.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ #include <stdexcept>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/input/plugins/QobuzLoginRequest.cxx new.MPD-master/src/input/plugins/QobuzLoginRequest.cxx
+--- old.MPD-master/src/input/plugins/QobuzLoginRequest.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/input/plugins/QobuzLoginRequest.cxx	2026-06-19 19:58:05.704979150 +0800
+@@ -7,6 +7,9 @@
+ #include "lib/curl/Form.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ #include <nlohmann/json.hpp>
+ 
+ #include <cassert>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/input/plugins/QobuzTrackRequest.cxx new.MPD-master/src/input/plugins/QobuzTrackRequest.cxx
+--- old.MPD-master/src/input/plugins/QobuzTrackRequest.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/input/plugins/QobuzTrackRequest.cxx	2026-06-19 19:58:05.705098866 +0800
+@@ -6,6 +6,9 @@
+ #include "QobuzClient.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ #include <nlohmann/json.hpp>
+ 
+ using std::string_view_literals::operator""sv;
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/io/BufferedOutputStream.hxx new.MPD-master/src/io/BufferedOutputStream.hxx
+--- old.MPD-master/src/io/BufferedOutputStream.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/io/BufferedOutputStream.hxx	2026-06-19 19:58:05.705226053 +0800
+@@ -7,6 +7,9 @@
+ #include "util/SpanCast.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cstddef>
+ #include <string_view>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/avahi/Publisher.cxx new.MPD-master/src/lib/avahi/Publisher.cxx
+--- old.MPD-master/src/lib/avahi/Publisher.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/avahi/Publisher.cxx	2026-06-19 19:58:05.705359441 +0800
+@@ -14,6 +14,9 @@
+ #include <avahi-common/alternative.h>
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/dvdaiso/meson.build new.MPD-master/src/lib/dvdaiso/meson.build
+--- old.MPD-master/src/lib/dvdaiso/meson.build	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/dvdaiso/meson.build	2026-06-19 19:58:05.703371128 +0800
 @@ -1,3 +1,9 @@
 +# 取得目前使用的 C++ 編譯器
 +cpp_compiler = meson.get_compiler('cpp')
@@ -19,9 +162,74 @@ diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/
    ],
  )
  
-diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/src/lib/sacdiso/meson.build mpd.new/src/lib/sacdiso/meson.build
---- mpd.orig/src/lib/sacdiso/meson.build	2026-03-07 15:40:47.000000000 +0800
-+++ mpd.new/src/lib/sacdiso/meson.build	2026-04-02 13:38:44.195709860 +0800
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/fmt/RuntimeError.hxx new.MPD-master/src/lib/fmt/RuntimeError.hxx
+--- old.MPD-master/src/lib/fmt/RuntimeError.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/fmt/RuntimeError.hxx	2026-06-19 19:58:05.705490670 +0800
+@@ -4,6 +4,9 @@
+ #pragma once
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <stdexcept> // IWYU pragma: export
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/fmt/SystemError.hxx new.MPD-master/src/lib/fmt/SystemError.hxx
+--- old.MPD-master/src/lib/fmt/SystemError.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/fmt/SystemError.hxx	2026-06-19 19:58:05.705623332 +0800
+@@ -6,6 +6,9 @@
+ #include "system/Error.hxx" // IWYU pragma: export
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <type_traits>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/fmt/ToBuffer.hxx new.MPD-master/src/lib/fmt/ToBuffer.hxx
+--- old.MPD-master/src/lib/fmt/ToBuffer.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/fmt/ToBuffer.hxx	2026-06-19 19:58:05.705741535 +0800
+@@ -6,6 +6,9 @@
+ #include "util/StringBuffer.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ template<std::size_t size>
+ constexpr StringBuffer<size> &
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/fmt/Unsafe.hxx new.MPD-master/src/lib/fmt/Unsafe.hxx
+--- old.MPD-master/src/lib/fmt/Unsafe.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/fmt/Unsafe.hxx	2026-06-19 19:58:05.705858192 +0800
+@@ -4,6 +4,9 @@
+ #pragma once
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <string_view>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/nfs/FileReader.cxx new.MPD-master/src/lib/nfs/FileReader.cxx
+--- old.MPD-master/src/lib/nfs/FileReader.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/nfs/FileReader.cxx	2026-06-19 19:58:05.705988756 +0800
+@@ -11,6 +11,9 @@
+ #include <nfsc/libnfs.h> // for struct nfs_stat_64
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ #include <cstring>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/lib/sacdiso/meson.build new.MPD-master/src/lib/sacdiso/meson.build
+--- old.MPD-master/src/lib/sacdiso/meson.build	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/lib/sacdiso/meson.build	2026-06-19 19:58:05.703758435 +0800
 @@ -1,3 +1,9 @@
 +# 取得目前使用的 C++ 編譯器
 +cpp_compiler = meson.get_compiler('cpp')
@@ -39,4 +247,186 @@ diff '--exclude=.git' '--exclude=.github' --unified --recursive --text mpd.orig/
 +    ixml_dep,
    ],
  )
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/Log.hxx new.MPD-master/src/Log.hxx
+--- old.MPD-master/src/Log.hxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/Log.hxx	2026-06-19 19:58:05.706127484 +0800
+@@ -6,6 +6,9 @@
+ #include "LogLevel.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <exception>
+ #include <string_view>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/Mapper.cxx new.MPD-master/src/Mapper.cxx
+--- old.MPD-master/src/Mapper.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/Mapper.cxx	2026-06-19 19:58:05.706252112 +0800
+@@ -18,6 +18,9 @@
+ #endif
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/net/ToString.cxx new.MPD-master/src/net/ToString.cxx
+--- old.MPD-master/src/net/ToString.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/net/ToString.cxx	2026-06-19 19:58:05.706379240 +0800
+@@ -7,6 +7,9 @@
+ #include "net/Features.hxx" // for HAVE_TCP, HAVE_IPV6, HAVE_UN
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <algorithm>
+ #include <cassert>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/output/Init.cxx new.MPD-master/src/output/Init.cxx
+--- old.MPD-master/src/output/Init.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/output/Init.cxx	2026-06-19 19:58:05.706517243 +0800
+@@ -25,6 +25,9 @@
+ #include "Log.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ #include <stdexcept>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/output/plugins/httpd/HttpdClient.cxx new.MPD-master/src/output/plugins/httpd/HttpdClient.cxx
+--- old.MPD-master/src/output/plugins/httpd/HttpdClient.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/output/plugins/httpd/HttpdClient.cxx	2026-06-19 19:58:05.706702659 +0800
+@@ -14,6 +14,9 @@
+ #include "Log.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/output/plugins/httpd/IcyMetaDataServer.cxx new.MPD-master/src/output/plugins/httpd/IcyMetaDataServer.cxx
+--- old.MPD-master/src/output/plugins/httpd/IcyMetaDataServer.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/output/plugins/httpd/IcyMetaDataServer.cxx	2026-06-19 19:58:05.706809585 +0800
+@@ -6,6 +6,9 @@
+ #include "util/TruncateString.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <iterator>
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/song/AddedSinceSongFilter.cxx new.MPD-master/src/song/AddedSinceSongFilter.cxx
+--- old.MPD-master/src/song/AddedSinceSongFilter.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/song/AddedSinceSongFilter.cxx	2026-06-19 19:58:05.706901887 +0800
+@@ -7,6 +7,9 @@
+ #include "util/StringBuffer.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ using std::string_view_literals::operator""sv;
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/song/AudioFormatSongFilter.cxx new.MPD-master/src/song/AudioFormatSongFilter.cxx
+--- old.MPD-master/src/song/AudioFormatSongFilter.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/song/AudioFormatSongFilter.cxx	2026-06-19 19:58:05.706986980 +0800
+@@ -6,6 +6,9 @@
+ #include "util/StringBuffer.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ using std::string_view_literals::operator""sv;
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/song/LightSong.cxx new.MPD-master/src/song/LightSong.cxx
+--- old.MPD-master/src/song/LightSong.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/song/LightSong.cxx	2026-06-19 20:04:59.765015451 +0800
+@@ -5,6 +5,9 @@
+ #include "tag/Tag.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ using std::string_view_literals::operator""sv;
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/song/ModifiedSinceSongFilter.cxx new.MPD-master/src/song/ModifiedSinceSongFilter.cxx
+--- old.MPD-master/src/song/ModifiedSinceSongFilter.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/song/ModifiedSinceSongFilter.cxx	2026-06-19 19:58:05.707071342 +0800
+@@ -7,6 +7,9 @@
+ #include "util/StringBuffer.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ using std::string_view_literals::operator""sv;
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/song/TagSongFilter.cxx new.MPD-master/src/song/TagSongFilter.cxx
+--- old.MPD-master/src/song/TagSongFilter.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/song/TagSongFilter.cxx	2026-06-19 20:02:46.598696730 +0800
+@@ -9,6 +9,9 @@
+ #include "tag/Fallback.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ using std::string_view_literals::operator""sv;
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/song/UriSongFilter.cxx new.MPD-master/src/song/UriSongFilter.cxx
+--- old.MPD-master/src/song/UriSongFilter.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/song/UriSongFilter.cxx	2026-06-19 20:04:18.757238234 +0800
+@@ -6,6 +6,9 @@
+ #include "LightSong.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ using std::string_view_literals::operator""sv;
+ 
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/storage/plugins/NfsStorage.cxx new.MPD-master/src/storage/plugins/NfsStorage.cxx
+--- old.MPD-master/src/storage/plugins/NfsStorage.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/storage/plugins/NfsStorage.cxx	2026-06-19 19:58:05.707182140 +0800
+@@ -29,6 +29,9 @@
+ }
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
+ #include <string>
+diff '--exclude=.git' '--exclude=.github' --unified --recursive --text old.MPD-master/src/win32/HResult.cxx new.MPD-master/src/win32/HResult.cxx
+--- old.MPD-master/src/win32/HResult.cxx	2026-06-19 16:16:25.000000000 +0800
++++ new.MPD-master/src/win32/HResult.cxx	2026-06-19 19:58:05.707288338 +0800
+@@ -9,6 +9,9 @@
+ #include "HResult.hxx"
+ 
+ #include <fmt/core.h>
++#if defined(FMT_VERSION) && FMT_VERSION >= 120200
++#include <fmt/format.h>
++#endif
+ 
+ #include <cassert>
  
